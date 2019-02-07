@@ -12,9 +12,9 @@ import java.util.List;
 public class FlightList {
 
     private List<Flight> flights;
-
-    @Autowired
-    private FlightCreator flightCreator;
+//
+//    @Autowired
+//    private FlightCreator flightCreator;
 
     public void addFlightToFlights(){
         flights = new ArrayList<>();
