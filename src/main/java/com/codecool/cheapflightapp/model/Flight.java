@@ -10,6 +10,7 @@ public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String company;
     private String startTown;
     private String arriveTown;
@@ -32,6 +33,14 @@ public class Flight {
 
     public Flight() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompany() {
