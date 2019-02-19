@@ -29,5 +29,4 @@ public class Flight {
     private String confort;
     private double price;
 
-
 }
