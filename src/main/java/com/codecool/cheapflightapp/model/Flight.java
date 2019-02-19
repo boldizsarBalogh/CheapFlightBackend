@@ -1,7 +1,16 @@
 package com.codecool.cheapflightapp.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "Flights")
 public class Flight {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String company;
     private String startTown;
     private String arriveTown;
@@ -24,6 +33,14 @@ public class Flight {
 
     public Flight() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompany() {
@@ -97,4 +114,5 @@ public class Flight {
     public void setPrice(double price) {
         this.price = price;
     }
+
 }

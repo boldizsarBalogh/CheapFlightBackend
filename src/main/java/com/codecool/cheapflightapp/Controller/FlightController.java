@@ -1,7 +1,7 @@
 package com.codecool.cheapflightapp.Controller;
 
 
-import com.codecool.cheapflightapp.Service.FlightList;
+import com.codecool.cheapflightapp.Service.FlightService;
 import com.codecool.cheapflightapp.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,12 +15,11 @@ import java.util.List;
 public class FlightController {
 
     @Autowired
-    private FlightList flightList;
+    private FlightService flightService;
 
     @GetMapping("/")
     public List<Flight> flightList(){
-        flightList.addFlightToFlights();
-        return flightList.getFlights();
+        return flightService.addFlightToFlights();
     }
 
 }
