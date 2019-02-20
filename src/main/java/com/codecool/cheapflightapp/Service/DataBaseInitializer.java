@@ -4,6 +4,7 @@ package com.codecool.cheapflightapp.Service;
 
 import com.codecool.cheapflightapp.Repository.FlightRepository;
 import com.codecool.cheapflightapp.model.Flight;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-
+@Data
 @Service
 public class DataBaseInitializer {
     Random random = new Random();
