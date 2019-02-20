@@ -1,4 +1,4 @@
-package com.codecool.cheapflightapp.Controller;
+package com.codecool.cheapflightapp.controller;
 
 
 import com.codecool.cheapflightapp.Service.FlightService;
@@ -21,5 +21,7 @@ public class FlightController {
     public List<Flight> flightList(){
         return flightService.addFlightToFlights();
     }
+
+
 
 }
