@@ -40,4 +40,47 @@ public class AllFlightRepositoryTest {
 
     }
 
+    @Test
+    public void findFlight(){
+        Flight newFlight = Flight.builder()
+                .company("Ryanair")
+                .startTown("BUD")
+                .arriveTown("MAD")
+                .date("2019-03-01")
+                .startTime("17:45")
+                .arriveTime("20:20")
+                .confort("Turista")
+                .price(99.9)
+                .build();
+        flightRepository.save(newFlight);
+
+        Flight newFlight2 = Flight.builder()
+                .company("Ryanair")
+                .startTown("BUD")
+                .arriveTown("ROM")
+                .date("2019-03-01")
+                .startTime("17:45")
+                .arriveTime("20:20")
+                .confort("Turista")
+                .price(99.9)
+                .build();
+        flightRepository.save(newFlight2);
+
+        Flight newFlight3 = Flight.builder()
+                .company("Ryanair")
+                .startTown("BUD")
+                .arriveTown("ROM")
+                .date("2019-04-01")
+                .startTime("17:45")
+                .arriveTime("20:20")
+                .confort("Turista")
+                .price(99.9)
+                .build();
+        flightRepository.save(newFlight3);
+
+
+        List<Flight> flights = flightRepository.findFlightByStartTownAndArriveTown("BUD", "ROM");
+        assertEquals(2, flights.size());
+    }
+
 }
