@@ -1,8 +1,8 @@
 package com.codecool.cheapflightapp;
 
-import com.codecool.cheapflightapp.Repository.FlightRepository;
+import com.codecool.cheapflightapp.repository.CityRepository;
+import com.codecool.cheapflightapp.repository.FlightRepository;
 import com.codecool.cheapflightapp.Service.DataBaseInitializer;
-import com.codecool.cheapflightapp.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +20,9 @@ public class CheapFlightAppApplication {
     @Autowired
     private DataBaseInitializer dataBaseInitializer;
 
+    @Autowired
+    private CityRepository cityRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(CheapFlightAppApplication.class, args);
     }
@@ -28,7 +31,9 @@ public class CheapFlightAppApplication {
     @Profile("production")
     public CommandLineRunner init(){
         return args -> {
-            dataBaseInitializer.initalize(flightRepository,2000);
+            String[] cityArr =  {"Budapest","Berlin","Madrid","Paris","Brussels"};
+            dataBaseInitializer.initializeCities(cityArr,cityRepository);
+            dataBaseInitializer.initalizeFlights(flightRepository,2000,cityRepository.findAll());
         };
     }
 

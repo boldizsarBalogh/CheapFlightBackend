@@ -2,13 +2,16 @@ package com.codecool.cheapflightapp.Service;
 
 
 
-import com.codecool.cheapflightapp.Repository.FlightRepository;
+import com.codecool.cheapflightapp.repository.CityRepository;
+import com.codecool.cheapflightapp.repository.FlightRepository;
+import com.codecool.cheapflightapp.model.City;
 import com.codecool.cheapflightapp.model.Flight;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -17,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class DataBaseInitializer {
     Random random = new Random();
-    String[] cities = {"Budapest","Berlin","Madrid","Paris","Brussels"};
     String[] companies = {"Wizair","Ryanair","Lufthansa"};
     String[] conforts = {"Business","Economy"};
     DecimalFormat df = new DecimalFormat("#.#");
@@ -31,17 +33,25 @@ public class DataBaseInitializer {
 
     }
 
+    public void initializeCities(String[] cities, CityRepository cityRepository){
+        for(int i = 0; i < cities.length;i++){
+            cityRepository.save(City.builder()
+                    .name(cities[i])
+                    .build());
+        }
+    }
 
-    public void initalize(FlightRepository flightRepository,int recordNumber){
+
+    public void initalizeFlights(FlightRepository flightRepository, int flightCount, List<City> cities){
 
 
-        for(int i = 1; i <= recordNumber;i++){
-            String startTown = cities[random.nextInt(5)];
-            String arriveTown = cities[random.nextInt(5)];
+        for(int i = 1; i <= flightCount;i++){
+            City startTown = cities.get(random.nextInt(cities.size()));
+            City arriveTown = cities.get(random.nextInt(cities.size()));
             LocalTime startTime = LocalTime.MIN.plusSeconds(random.nextLong());
             Double price = Double.parseDouble(df.format(ThreadLocalRandom.current().nextDouble(50, 100)));
             while(startTown.equals(arriveTown)){
-                arriveTown = cities[random.nextInt(5)];
+                arriveTown = cities.get(random.nextInt(cities.size()));
             }
             Flight current = Flight.builder()
                     .confort(conforts[random.nextInt(2)])
