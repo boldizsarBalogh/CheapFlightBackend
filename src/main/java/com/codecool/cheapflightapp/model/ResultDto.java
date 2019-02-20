@@ -3,6 +3,9 @@ package com.codecool.cheapflightapp.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Data
 @AllArgsConstructor
 public class ResultDto {
@@ -11,9 +14,9 @@ public class ResultDto {
     private String company;
     private String startTown;
     private String arriveTown;
-    private String date;
-    private String startTime;
-    private String arriveTime;
+    private LocalDate date; // localDate
+    private LocalTime startTime;// localTime
+    private LocalTime arriveTime; // City
     private String confort;
     private double price;
 }
