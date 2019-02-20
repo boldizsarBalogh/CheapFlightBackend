@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -23,9 +25,9 @@ public class Flight {
     private String company;
     private String startTown;
     private String arriveTown;
-    private String date;
-    private String startTime;
-    private String arriveTime;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime arriveTime;
     private String confort;
     private double price;
 
