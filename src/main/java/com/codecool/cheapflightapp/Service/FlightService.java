@@ -1,6 +1,6 @@
 package com.codecool.cheapflightapp.Service;
 
-import com.codecool.cheapflightapp.Repository.FlightRepository;
+import com.codecool.cheapflightapp.repository.FlightRepository;
 import com.codecool.cheapflightapp.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

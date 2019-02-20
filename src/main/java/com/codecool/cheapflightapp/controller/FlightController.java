@@ -1,4 +1,4 @@
-package com.codecool.cheapflightapp.Controller;
+package com.codecool.cheapflightapp.controller;
 
 
 import com.codecool.cheapflightapp.Repository.FlightRepository;
