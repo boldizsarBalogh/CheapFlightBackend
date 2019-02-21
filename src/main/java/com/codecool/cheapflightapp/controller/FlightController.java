@@ -25,12 +25,18 @@ public class FlightController {
         return flightService.addFlightToFlights();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    @GetMapping("/search")
     public List<ResultDto> getFlights(@RequestParam Map<String, String> searchQuery) {
         String startTown= searchQuery.get("startTown");
         String arriveTown= searchQuery.get("arriveTown");
         return flightRepository.findFlightByStartTownAndArriveTown(startTown, arriveTown);
 
         }
+
+    @GetMapping("/cheapest")
+    public List<ResultDto> getCheapestFlights(){
+        return flightService.getNCheapest(3);
+    }
+
 
 }

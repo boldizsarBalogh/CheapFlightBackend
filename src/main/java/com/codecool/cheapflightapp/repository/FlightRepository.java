@@ -22,4 +22,10 @@ public interface FlightRepository  extends JpaRepository<Flight, Integer> {
 
     List<Flight> findAll();
 
+    @Query("SELECT new com.codecool.cheapflightapp.model.ResultDto(f.company, st.name, at.name, f.date, f.startTime, f.arriveTime, f.confort, f.price) " +
+            "from com.codecool.cheapflightapp.model.Flight f " +
+            "join  f.startTown st " +
+            "join  f.arriveTown at " +
+            "order by f.price")
+    List<ResultDto> getFlightsByPrice();
 }
