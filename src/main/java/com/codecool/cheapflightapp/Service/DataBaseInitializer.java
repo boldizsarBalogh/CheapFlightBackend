@@ -30,7 +30,6 @@ public class DataBaseInitializer {
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
         return randomDate;
-
     }
 
     public void initializeCities(String[] cities, CityRepository cityRepository){
@@ -40,7 +39,6 @@ public class DataBaseInitializer {
                     .build());
         }
     }
-
 
     public void initalizeFlights(FlightRepository flightRepository, int flightCount, List<City> cities){
 
@@ -65,7 +63,5 @@ public class DataBaseInitializer {
                     .build();
             flightRepository.save(current);
         }
-
     }
-
 }

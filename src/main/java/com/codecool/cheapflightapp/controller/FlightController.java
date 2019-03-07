@@ -7,7 +7,6 @@ import com.codecool.cheapflightapp.model.ResultDto;
 import com.codecool.cheapflightapp.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
