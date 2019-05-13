@@ -23,4 +23,4 @@ and evaluate the result based on price
 ## Install notes
 * Maven is used as a build tool for the project 
 You can find more information at the official maven website(https://maven.apache.org/install.html)
-*You can run the project with the "mvn spring-boot:run" command
+* You can run the project with the "mvn spring-boot:run" command
