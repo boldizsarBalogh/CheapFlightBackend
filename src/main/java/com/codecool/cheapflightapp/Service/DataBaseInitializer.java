@@ -26,7 +26,7 @@ public class DataBaseInitializer {
 
     private LocalDate dateRandomizer(){
         long minDay = LocalDate.now().toEpochDay();
-        long maxDay = LocalDate.of(2019, 4, 30).toEpochDay();
+        long maxDay = LocalDate.of(2019, 6, 30).toEpochDay();
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
         return randomDate;

@@ -24,7 +24,7 @@ public class DBInit {
     private CityRepository cityRepository;
 
     @Bean
-//    @Profile("production")
+ //   @Profile("production")
     public CommandLineRunner init(){
         return args -> {
             String[] cityArr =  {"Budapest","Berlin","Madrid","Paris","Brussels"};
