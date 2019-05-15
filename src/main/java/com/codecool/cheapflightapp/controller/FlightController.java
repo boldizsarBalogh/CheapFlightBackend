@@ -2,6 +2,7 @@ package com.codecool.cheapflightapp.controller;
 
 
 import com.codecool.cheapflightapp.Service.FlightService;
+import com.codecool.cheapflightapp.Service.ScraperService;
 import com.codecool.cheapflightapp.model.Flight;
 import com.codecool.cheapflightapp.model.ResultDto;
 import com.codecool.cheapflightapp.repository.FlightRepository;
@@ -16,8 +17,12 @@ public class FlightController {
 
     @Autowired
     private FlightService flightService;
+
     @Autowired
     private FlightRepository flightRepository;
+
+    @Autowired
+    private ScraperService scraperService;
 
     @GetMapping("/")
     public List<Flight> flightList(){
@@ -35,6 +40,11 @@ public class FlightController {
     @GetMapping("/cheapest")
     public List<ResultDto> getCheapestFlights(){
         return flightService.getNCheapest(3);
+    }
+
+    @GetMapping("/scrape")
+    public void scrape(){
+        scraperService.printPageTitle();
     }
 
 

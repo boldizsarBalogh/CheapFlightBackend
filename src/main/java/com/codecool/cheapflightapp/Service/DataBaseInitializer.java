@@ -1,7 +1,5 @@
 package com.codecool.cheapflightapp.Service;
 
-
-
 import com.codecool.cheapflightapp.repository.CityRepository;
 import com.codecool.cheapflightapp.repository.FlightRepository;
 import com.codecool.cheapflightapp.model.City;
@@ -15,14 +13,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 @Data
 @Service
 public class DataBaseInitializer {
-    Random random = new Random();
-    String[] companies = {"Wizair","Ryanair","Lufthansa"};
-    String[] conforts = {"Business","Economy"};
-    DecimalFormat df = new DecimalFormat("#.#");
+    private Random random = new Random();
+    private String[] companies = {"Wizair","Ryanair","Lufthansa"};
+    private String[] conforts = {"Business","Economy"};
+    private DecimalFormat df = new DecimalFormat("#.#");
+
 
     private LocalDate dateRandomizer(){
         long minDay = LocalDate.now().toEpochDay();
