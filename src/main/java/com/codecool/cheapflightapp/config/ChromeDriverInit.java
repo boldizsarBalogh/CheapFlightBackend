@@ -11,7 +11,6 @@ public class ChromeDriverInit {
     private ScraperService scraperService;
 
     @Bean
-
     public void initDrivers(){
         scraperService.ChromeDriverInitalizer();
     }

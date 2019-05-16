@@ -43,8 +43,9 @@ public class FlightController {
     }
 
     @GetMapping("/scrape")
-    public void scrape(){
-        scraperService.printPageTitle();
+    public void scrape() {
+        scraperService.scrapeExpendia();
+
     }
 
 
