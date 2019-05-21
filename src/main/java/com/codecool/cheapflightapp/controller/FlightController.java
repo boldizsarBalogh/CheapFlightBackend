@@ -43,8 +43,10 @@ public class FlightController {
     }
 
     @GetMapping("/scrape")
-    public String scrape() {
-        return scraperService.scrapeExpendia();
+    public String scrape(@RequestParam Map<String, String> searchQuery) {
+        String startTown= searchQuery.get("startTown");
+        String arriveTown= searchQuery.get("arriveTown");
+        return scraperService.scrapeExpendia(startTown,arriveTown);
 
     }
 

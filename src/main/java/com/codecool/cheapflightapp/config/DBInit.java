@@ -29,7 +29,7 @@ public class DBInit {
         return args -> {
             String[] cityArr =  {"Budapest","Berlin","Madrid","Paris","Brussels"};
             dataBaseInitializer.initializeCities(cityArr,cityRepository);
-            dataBaseInitializer.initalizeFlights(flightRepository,2000,cityRepository.findAll());
+//            dataBaseInitializer.initalizeFlights(flightRepository,2000,cityRepository.findAll());
         };
     }
 }
