@@ -41,6 +41,25 @@ public class ScraperService {
         this.webDriver = new ChromeDriver(chromeOptions);
         this.javascriptExecutor = (JavascriptExecutor)webDriver;
     }
+
+    private LocalTime toLocalTimeForExpendia(String timeString){
+
+        String timeStringMerediem = timeString.substring(timeString.length()-2).toUpperCase();
+        String timeSubString = timeString.substring(0,timeString.length()-2);
+        String[] time = timeSubString.split(":");
+        if(timeStringMerediem.equals("AM")){
+            if(Integer.valueOf(time[0]) == 12){
+                return LocalTime.of(0,Integer.valueOf(time[1]));
+            }
+            return LocalTime.of(Integer.valueOf(time[0]),Integer.valueOf(time[1]));
+        }else{
+            if(Integer.valueOf(time[0])== 12){
+                return LocalTime.of(Integer.valueOf(time[0]),Integer.valueOf(time[1]));
+            }
+            return LocalTime.of(Integer.valueOf(time[0]) + 12, Integer.valueOf(time[1]));
+        }
+
+    }
     public String scrapeExpendia(String startTown, String destination) {
         List<WebElement> departures;
         List<WebElement> arrivals;
@@ -68,21 +87,17 @@ public class ScraperService {
 
 
         for(int i = 0 ; i < departures.size();i++){
-            String departureString = departures.get(i).getText();
-            String departureMerediem = departureString.substring(departureString.length()-2);
-            String arrivalString = arrivals.get(i).getText();
-            String arrivalMerediem = arrivalString.substring(arrivalString.length()-2);
-            LocalTime departureTime = LocalTime.parse(departureString.substring(0,departureString.length()-2) + " "+departureMerediem.toUpperCase(),);
+
 
             Flight current = Flight.builder()
                     .confort("Economy")
                     .startTown(cityRepository.findCityByName(startTown))
                     .arriveTown(cityRepository.findCityByName(destination))
-//                    .startTime(LocalTime)
-//                    .arriveTime(arrivals.get(i).getText())
+                    .startTime(toLocalTimeForExpendia(departures.get(i).getText()))
+                    .arriveTime(toLocalTimeForExpendia(arrivals.get(i).getText()))
                     .company("some Company")
                     .date(LocalDate.parse(formattedDate,formatter))
-                    .price(Double.valueOf(priceElements.get(i).getText().substring(1)))
+                    .price(Double.valueOf(priceElements.get(i).getText().substring(1).replace(",",".")))
                     .build();
             flightRepository.save(current);
         }
