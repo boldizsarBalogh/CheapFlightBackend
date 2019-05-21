@@ -1,17 +1,31 @@
 package com.codecool.cheapflightapp.Service;
+import com.codecool.cheapflightapp.model.Flight;
+import com.codecool.cheapflightapp.repository.CityRepository;
+import com.codecool.cheapflightapp.repository.FlightRepository;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Service
 public class ScraperService {
+
+    @Autowired
+    FlightRepository flightRepository;
+
+    @Autowired
+    CityRepository cityRepository;
+
+
     private String chromeDriverPath;
     private ChromeOptions chromeOptions;
     private WebDriver webDriver;
@@ -23,26 +37,55 @@ public class ScraperService {
         this.chromeDriverPath = "/usr/bin/chromedriver/chromedriver";
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         this.chromeOptions = new ChromeOptions();
-        this.chromeOptions.addArguments( "user-agent="+UserAgent,"--headless","--window-size=1920,1200","--ignore-certificate-errors");
+        this.chromeOptions.addArguments( "user-agent="+UserAgent,"--window-size=1920,1200","--headless","--ignore-certificate-errors");
         this.webDriver = new ChromeDriver(chromeOptions);
         this.javascriptExecutor = (JavascriptExecutor)webDriver;
     }
-    public String scrapeExpendia() {
+    public String scrapeExpendia(String startTown, String destination) {
+        List<WebElement> departures;
+        List<WebElement> arrivals;
+        List<WebElement> priceElements;
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/uuuu");
+        String formattedDate = tomorrow.format(formatter);
+
+
         webDriver.get(ExpediaURL);
         System.out.println(webDriver.getTitle());
         WebElement flightOnly = webDriver.findElement(By.id("tab-flight-tab-hp"));
         flightOnly.click();
         webDriver.findElement(By.id("flight-type-one-way-label-hp-flight")).click();
-//        WebElement originField = webDriver.findElement(By.id("flight-origin-hp-flight"));
-        javascriptExecutor.executeScript("document.getElementById('flight-origin-hp-flight').value='BUD'");
-//        WebElement destinationField = webDriver.findElement(By.id("flight-destination-hp-flight"));
-        javascriptExecutor.executeScript("document.getElementById('flight-destination-hp-flight').value='LON'");
+        javascriptExecutor.executeScript("document.getElementById('flight-origin-hp-flight').value=" + "'"+ startTown + "'");
+        javascriptExecutor.executeScript("document.getElementById('flight-destination-hp-flight').value=" +"'"+ destination +"'");
         WebElement datePicker = webDriver.findElement(By.id("flight-departing-single-hp-flight"));
         datePicker.clear();
-        datePicker.sendKeys("06/21/2019");
+        datePicker.sendKeys(formattedDate);
         flightOnly.click();
         webDriver.findElement(By.xpath("//button[@class='btn-primary btn-action gcw-submit']")).click();
-        System.out.println(webDriver.getTitle());
+        departures = webDriver.findElements(By.xpath("//span[@data-test-id='departure-time']"));
+        arrivals = webDriver.findElements(By.xpath("//span[@data-test-id='arrival-time']"));
+        priceElements = webDriver.findElements(By.xpath("//span[@data-test-id='listing-price-dollars']"));
+
+
+        for(int i = 0 ; i < departures.size();i++){
+            String departureString = departures.get(i).getText();
+            String departureMerediem = departureString.substring(departureString.length()-2);
+            String arrivalString = arrivals.get(i).getText();
+            String arrivalMerediem = arrivalString.substring(arrivalString.length()-2);
+            LocalTime departureTime = LocalTime.parse(departureString.substring(0,departureString.length()-2) + " "+departureMerediem.toUpperCase(),);
+
+            Flight current = Flight.builder()
+                    .confort("Economy")
+                    .startTown(cityRepository.findCityByName(startTown))
+                    .arriveTown(cityRepository.findCityByName(destination))
+//                    .startTime(LocalTime)
+//                    .arriveTime(arrivals.get(i).getText())
+                    .company("some Company")
+                    .date(LocalDate.parse(formattedDate,formatter))
+                    .price(Double.valueOf(priceElements.get(i).getText().substring(1)))
+                    .build();
+            flightRepository.save(current);
+        }
         return webDriver.getTitle();
 
 
