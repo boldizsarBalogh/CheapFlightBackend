@@ -15,10 +15,11 @@ public interface FlightRepository  extends JpaRepository<Flight, Integer> {
             "from com.codecool.cheapflightapp.model.Flight f " +
             "join  f.startTown st " +
             "join  f.arriveTown at " +
-            "WHERE st.name = :departure and at.name= :arrive")
+            "WHERE st.name = :departure and at.name= :arrive" +
+            " order by f.price")
     List<ResultDto> findFlightByStartTownAndArriveTown(@Param("departure") String start, @Param("arrive") String arrive);
 
-
+    void deleteAll();
 
     List<Flight> findAll();
 
