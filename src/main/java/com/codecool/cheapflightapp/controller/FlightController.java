@@ -33,6 +33,8 @@ public class FlightController {
     public List<ResultDto> getFlights(@RequestParam Map<String, String> searchQuery) {
         String startTown= searchQuery.get("startTown");
         String arriveTown= searchQuery.get("arriveTown");
+        flightRepository.deleteAll();
+        scraperService.scrapeExpendia(startTown,arriveTown);
         return flightRepository.findFlightByStartTownAndArriveTown(startTown, arriveTown);
 
         }
@@ -42,13 +44,7 @@ public class FlightController {
         return flightService.getNCheapest(3);
     }
 
-    @GetMapping("/scrape")
-    public String scrape(@RequestParam Map<String, String> searchQuery) {
-        String startTown= searchQuery.get("startTown");
-        String arriveTown= searchQuery.get("arriveTown");
-        return scraperService.scrapeExpendia(startTown,arriveTown);
 
-    }
 
 
 }
