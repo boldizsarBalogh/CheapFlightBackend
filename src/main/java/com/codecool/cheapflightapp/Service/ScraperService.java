@@ -8,6 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -26,20 +29,21 @@ public class ScraperService {
     CityRepository cityRepository;
 
 
-    private String chromeDriverPath;
     private ChromeOptions chromeOptions;
     private WebDriver webDriver;
     private JavascriptExecutor javascriptExecutor;
     private final String ExpediaURL = "https://www.expedia.com/";
-    private final String UserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36";
+    private WebDriverWait webDriverWait;
 
     public void ChromeDriverInitalizer(){
-        this.chromeDriverPath = "/usr/bin/chromedriver/chromedriver";
+        String chromeDriverPath = "/usr/bin/chromedriver/chromedriver";
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         this.chromeOptions = new ChromeOptions();
-        this.chromeOptions.addArguments( "user-agent="+UserAgent,"--window-size=1920,1200","--headless","--ignore-certificate-errors");
+        String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36";
+        this.chromeOptions.addArguments( "user-agent="+ userAgent,"--window-size=1920,1200","--headless","--ignore-certificate-errors");
         this.webDriver = new ChromeDriver(chromeOptions);
         this.javascriptExecutor = (JavascriptExecutor)webDriver;
+        this.webDriverWait = new WebDriverWait(webDriver,5);
     }
 
     private LocalTime toLocalTimeForExpendia(String timeString){
@@ -60,10 +64,11 @@ public class ScraperService {
         }
 
     }
-    public String scrapeExpendia(String startTown, String destination) {
+    public void scrapeExpendia(String startTown, String destination) {
         List<WebElement> departures;
         List<WebElement> arrivals;
         List<WebElement> priceElements;
+        List<WebElement> airLineNames;
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/uuuu");
         String formattedDate = tomorrow.format(formatter);
@@ -81,10 +86,12 @@ public class ScraperService {
         datePicker.sendKeys(formattedDate);
         flightOnly.click();
         webDriver.findElement(By.xpath("//button[@class='btn-primary btn-action gcw-submit']")).click();
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test-id='select-button']")));
         departures = webDriver.findElements(By.xpath("//span[@data-test-id='departure-time']"));
         arrivals = webDriver.findElements(By.xpath("//span[@data-test-id='arrival-time']"));
         priceElements = webDriver.findElements(By.xpath("//span[@data-test-id='listing-price-dollars']"));
-
+        airLineNames = webDriver.findElements(By.xpath("//span[@data-test-id='airline-name']"));
+        System.out.println(webDriver.getTitle());
 
         for(int i = 0 ; i < departures.size();i++){
 
@@ -95,13 +102,12 @@ public class ScraperService {
                     .arriveTown(cityRepository.findCityByName(destination))
                     .startTime(toLocalTimeForExpendia(departures.get(i).getText()))
                     .arriveTime(toLocalTimeForExpendia(arrivals.get(i).getText()))
-                    .company("some Company")
+                    .company(airLineNames.get(i).getText())
                     .date(LocalDate.parse(formattedDate,formatter))
-                    .price(Double.valueOf(priceElements.get(i).getText().substring(1).replace(",",".")))
+                    .price(Double.valueOf(priceElements.get(i).getText().substring(1).replace(",","")))
                     .build();
             flightRepository.save(current);
         }
-        return webDriver.getTitle();
 
 
 

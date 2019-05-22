@@ -30,7 +30,7 @@ public class FlightController {
     }
 
     @GetMapping("/search")
-    public List<ResultDto> getFlights(@RequestParam Map<String, String> searchQuery) {
+    public List<ResultDto> getFlights(@RequestParam Map<String, String> searchQuery)  {
         String startTown= searchQuery.get("startTown");
         String arriveTown= searchQuery.get("arriveTown");
         flightRepository.deleteAll();
