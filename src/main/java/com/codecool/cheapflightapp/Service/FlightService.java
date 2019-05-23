@@ -27,25 +27,25 @@ public class FlightService {
     @Autowired
     private CityRepository cityRepository;
 
+    private void saveCurrentSearchHistory(String startTown, String arriveTown){
+        SearchHistory current = SearchHistory.builder()
+                .time(LocalTime.now())
+                .origin(startTown)
+                .destination(arriveTown)
+                .build();
+        searchHistoryRepository.save(current);
+    }
+
     private boolean isFlightsSearched(String startTown, String arriveTown){
         List<SearchHistory>  searchHistory = searchHistoryRepository.findSearchByOriginDestination(startTown,arriveTown);
         if(searchHistory.size() == 0){
-            SearchHistory current = SearchHistory.builder()
-                    .time(LocalTime.now())
-                    .origin(startTown)
-                    .destination(arriveTown)
-                    .build();
-            searchHistoryRepository.save(current);
+
+            saveCurrentSearchHistory(startTown,arriveTown);
             return false;
 
         }else if(ChronoUnit.MINUTES.between(searchHistory.get(0).getTime(), LocalTime.now()) > 10) {
 
-            SearchHistory current = SearchHistory.builder()
-                    .time(LocalTime.now())
-                    .origin(startTown)
-                    .destination(arriveTown)
-                    .build();
-            searchHistoryRepository.save(current);
+            saveCurrentSearchHistory(startTown,arriveTown);
             return false;
         }else{
             return true;
