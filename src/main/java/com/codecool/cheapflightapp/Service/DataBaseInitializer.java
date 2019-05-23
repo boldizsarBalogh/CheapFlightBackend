@@ -39,8 +39,6 @@ public class DataBaseInitializer {
     }
 
     public void initalizeFlights(FlightRepository flightRepository, int flightCount, List<City> cities){
-
-
         for(int i = 1; i <= flightCount;i++){
             City startTown = cities.get(random.nextInt(cities.size()));
             City arriveTown = cities.get(random.nextInt(cities.size()));

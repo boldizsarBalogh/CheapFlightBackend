@@ -21,7 +21,7 @@ public class SearchHistory {
     @GeneratedValue
     private int id;
 
-    private LocalTime timeOfSearch;
+    private LocalTime time;
     private String origin;
     private String destination;
 }

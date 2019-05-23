@@ -38,8 +38,8 @@ public class ScraperService {
     public void ChromeDriverInitalizer(){
         String chromeDriverPath = "/usr/bin/chromedriver/chromedriver";
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-        this.chromeOptions = new ChromeOptions();
         String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36";
+        this.chromeOptions = new ChromeOptions();
         this.chromeOptions.addArguments( "user-agent="+ userAgent,"--window-size=1920,1200","--headless","--ignore-certificate-errors");
         this.webDriver = new ChromeDriver(chromeOptions);
         this.javascriptExecutor = (JavascriptExecutor)webDriver;

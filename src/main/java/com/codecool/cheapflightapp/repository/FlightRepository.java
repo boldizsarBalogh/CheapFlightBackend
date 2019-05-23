@@ -1,5 +1,6 @@
 package com.codecool.cheapflightapp.repository;
 
+import com.codecool.cheapflightapp.model.City;
 import com.codecool.cheapflightapp.model.Flight;
 import com.codecool.cheapflightapp.model.ResultDto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +20,7 @@ public interface FlightRepository  extends JpaRepository<Flight, Integer> {
             " order by f.price")
     List<ResultDto> findFlightByStartTownAndArriveTown(@Param("departure") String start, @Param("arrive") String arrive);
 
-    void deleteAll();
+    void deleteFlightsByStartTownAndArriveTown(City startTown, City arriveTown);
 
     List<Flight> findAll();
 
