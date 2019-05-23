@@ -18,7 +18,7 @@ public class FlightController {
 
     @GetMapping("/")
     public List<Flight> flightList(){
-        return flightService.addFlightToFlights();
+        return flightService.findAllFlights();
     }
 
     @GetMapping("/search")

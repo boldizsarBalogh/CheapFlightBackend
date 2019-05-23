@@ -62,7 +62,7 @@ public class FlightService {
         }
     }
 
-    public List<Flight> addFlightToFlights(){
+    public List<Flight> findAllFlights(){
         return flightRepository.findAll();
     }
 
