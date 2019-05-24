@@ -2,7 +2,7 @@ package com.codecool.cheapflightapp.config;
 
 import com.codecool.cheapflightapp.Service.DataBaseInitializer;
 import com.codecool.cheapflightapp.repository.CityRepository;
-import com.codecool.cheapflightapp.repository.FlightRepository;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("production")
 public class DBInit {
 
-    @Autowired
-    private FlightRepository flightRepository;
+
 
     @Autowired
     private DataBaseInitializer dataBaseInitializer;
@@ -29,7 +28,7 @@ public class DBInit {
         return args -> {
             String[] cityArr =  {"Budapest","Berlin","Madrid","Paris","Brussels"};
             dataBaseInitializer.initializeCities(cityArr,cityRepository);
-            dataBaseInitializer.initalizeFlights(flightRepository,2000,cityRepository.findAll());
+//            dataBaseInitializer.initalizeFlights(flightRepository,2000,cityRepository.findAll());
         };
     }
 }
